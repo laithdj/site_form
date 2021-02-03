@@ -33,3 +33,10 @@
 background-color: #337ab7;
 color:#fff
 }
+
+:host ::ng-deep .dx-layout-manager .dx-field-item:not(.dx-first-col) {
+   padding-left: 0px !important; 
+}
+:host ::ng-deep .dx-layout-manager .dx-field-item:not(.dx-last-col) {
+  padding-right: 0px !important; 
+}
