@@ -1,0 +1,64 @@
+<dx-form [colCount]="5" cssClass="patient-panel">
+    <dxi-item [colSpan]="5">
+        <div style="display: flex;">
+            <img src="../../../assets/ht_logo.png">
+            <div style="padding:14px">
+                <h5><p>HealthTrack Site Setup : SE Qld Cardiology</p></h5>
+            </div>
+        </div>
+    </dxi-item>
+</dx-form>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">{{parentCategory}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{childCategory}}</li>
+    </ol>
+</nav>
+<dx-form [colCount]="15" cssClass="">
+    <dxi-item [colSpan]="2">
+        <div *dxTemplate>
+            <dx-tree-list #selectTree id="selectTree"
+            [dataSource]="categories"
+            [keyExpr]="'id'"
+            [width]="'100%'" 
+            [height]="'calc(100vh - 167px)'"
+            [rootValue]="-1"
+            [showColumnLines]="true"
+            [expandedRowKeys]="expandedRowKeys"
+            [columnAutoWidth]="true"
+            [showBorders]="true"
+            [showColumnHeaders]="false"
+            [selectedRowKeys]="selectedRowKeys"
+            (onRowClick)="selectItem($event)"
+            [parentIdExpr]="'parentId'">
+            <dxo-scrolling [useNative]="true"></dxo-scrolling>
+            <dxo-sorting [mode]="'single'"></dxo-sorting>
+            <dxo-selection [mode]="'single'"></dxo-selection>
+            <dxi-column [dataField]="'displayOrder'" [sortOrder]="'asc'" [visible]="false"></dxi-column>
+                <dxi-column dataField="text" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let cell of 'cellTemplate'">
+                        <div *ngIf="cell.data.parentId === -1">{{ cell.text }} ({{cell.row.node ? cell.row.node.children.length : ''}})</div>
+                        <div *ngIf="cell.data.parentId > -1">{{ cell.text }}</div>
+                    </div>
+                </dxi-column>
+          </dx-tree-list>
+        </div>
+    </dxi-item>
+    <dxi-item [colSpan]="13">
+        <div *dxTemplate style="height:calc(100vh - 170px);">
+            <div *ngIf="description" >
+                <description-page (addClicked)="addRecord()" [title]="title"></description-page>
+            </div>
+            <div [ngClass]="questionnaire ? 'show' : 'hide'" style="height:calc(100vh - 170px)">
+                <survey-page [questionnaireId]="templateId"></survey-page>
+            </div>
+            <app-footer (saveClicked)="saveQuiz()"
+            (deleteClicked)="deleteQuiz()"
+            (addClicked)="addRecord()"
+            (finishClicked)="finishClicked()"
+            [deleteDisabled]="deleteDisabled"
+            [newRecord]="description"
+            [title]="title"></app-footer>
+        </div>
+    </dxi-item>
+</dx-form>

@@ -1,0 +1,154 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "site-form": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/site-form",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/survey-angular/survey.css",
+              "node_modules/survey-analytics/survey.analytics.css",
+              "node_modules/survey-analytics/survey.analytics.tabulator.css",
+              "node_modules/survey-analytics/survey.analytics.datatables.css",
+              "node_modules/survey-creator/survey-creator.css",
+              "node_modules/jquery-ui/themes/base/theme.css",
+              "node_modules/jquery-ui/themes/base/datepicker.css",
+              "node_modules/nouislider/distribute/nouislider.css",
+              "node_modules/select2/dist/css/select2.css",
+              "node_modules/pretty-checkbox/dist/pretty-checkbox.css",
+              "node_modules/bootstrap-slider/dist/css/bootstrap-slider.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-pill.css",
+              "node_modules/jquery-bar-rating/dist/themes/css-stars.css",
+              "node_modules/jquery-bar-rating/dist/themes/fontawesome-stars.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-1to10.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-horizontal.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-movie.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-reversed.css",
+              "node_modules/jquery-bar-rating/dist/themes/bars-square.css",
+              "node_modules/jquery-bar-rating/dist/themes/bootstrap-stars.css",
+              "node_modules/jquery-bar-rating/dist/themes/fontawesome-stars-o.css",
+
+              //styles for datatables
+              "node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css",
+              
+              //styles for tabulator
+              "node_modules/tabulator-tables/dist/css/tabulator.css",
+              "src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "site-form:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "site-form:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "site-form:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "site-form:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "site-form:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "site-form"
+}

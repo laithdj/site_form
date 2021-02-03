@@ -1,0 +1,35 @@
+.dx-state-disabled .dx-widget, .dx-state-disabled.dx-widget {
+    opacity: 1;
+  }
+  
+  .patient-panel {
+    background-color: #f7f7f7;
+    padding: 10px 0px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: rgba(221, 221, 221, 0.6);
+  }
+
+/*  side nav css */
+.side-nav{
+    background-color: #e9ecef;
+    padding-left:10px;
+}
+
+.show{
+  display:unset;
+}
+.hide{
+  display: none;
+}
+
+:host ::ng-deep.dx-gridbase-container > .dx-treelist-rowsview.dx-scrollable{
+  background-color: #e9ecef;
+  padding-left:10px;
+  border-left: none;
+}
+
+:host ::ng-deep .dx-treelist-rowsview .dx-selection.dx-row:not(.dx-row-focused) > td{
+background-color: #337ab7;
+color:#fff
+}

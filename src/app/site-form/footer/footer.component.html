@@ -1,0 +1,21 @@
+<div class="hms-buttons-footer">
+    <div style="margin-right: 10px;">
+        <dx-button text="Delete" [width]="120" (onClick)="onDeleteClicked()" [type]="'danger'" [visible]="!newRecord"
+        [disabled]="deleteDisabled">
+        </dx-button>
+        <dx-button text="Add Record" [width]="120" (onClick)="onAddClicked()" [type]="'default'" [visible]="newRecord && title"
+        >
+        </dx-button>
+    </div>
+    <div style="margin-right: 10px;">
+        <dx-button text="Save" (onClick)="onSaveClicked()" [width]="120" [type]="'default'" [visible]="!newRecord">
+        </dx-button>
+    </div>
+    <div style="width: 100%;"></div>
+    <div style="width: auto; display: flex;">
+        <div style="margin-right: 10px;">
+            <dx-button text="I am Finished" (onClick)="onFinishClicked()" [width]="120" [type]="'success'" [visible]="!newRecord">
+            </dx-button>
+        </div>
+    </div>
+</div>
