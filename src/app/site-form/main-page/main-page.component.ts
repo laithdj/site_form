@@ -3,6 +3,7 @@ import { HttpDataService } from '../../services/http-data.service';
 import { SurveyComponent } from '../survey/survey.component';
 import * as SurveyPDF from "survey-pdf";
 import { confirm } from 'devextreme/ui/dialog';
+import * as Survey from "survey-angular";
 
 
 export class Category {
@@ -12,6 +13,7 @@ export class Category {
   parentId: number;
   result: any;
   children?: number;
+  html?:string;
 }
 export class Result {
   templateId: number;
@@ -41,11 +43,15 @@ export class MainPageComponent implements OnInit {
   expandedRowKeys: number[] = new Array();
   title: string;
   deleteDisabled = false;
+  uniqJsonCount = 0;
+  jsonDatas: any[] = new Array();
   constructor(private service: HttpDataService) { }
 
   ngOnInit(): void {
     this.getCategories();
     this.getResults();
+    this.getQuestionnairJsons();
+
   }
   getCategories() {
     this.service.getCategories().subscribe((response) => {
@@ -68,7 +74,7 @@ export class MainPageComponent implements OnInit {
       if (e.data.parentId === -1) {
         this.expandedRowKeys = [e.key];
         this.parentCategory = e.data.text;
-        this.title = e.data.text;
+        this.title = e.data.html;
         this.childCategory = '';
         this.description = true;
         this.questionnaire = false;
@@ -89,6 +95,11 @@ export class MainPageComponent implements OnInit {
   getQuestionnairJson(e): any {
     this.service.getCategoryItem(e).subscribe((response) => {
       this.jsonData = response;
+    });
+  }
+  getQuestionnairJsons(): any {
+    this.service.getCategoryItems().subscribe((response) => {
+      this.jsonDatas = response;
     });
   }
   saveResult(result: Result) {
@@ -141,6 +152,12 @@ export class MainPageComponent implements OnInit {
       });
     }
   }
+ makeQuesionNamesUnique(json) {
+  for (let i = 0; i < json.pages[0].elements.length; i++) {
+    json.pages[0].elements[i].name += "_uniqJsonCount" + this.uniqJsonCount; 
+  }
+  this.uniqJsonCount++;
+}
   deleteQuiz() {
 
     const result = confirm('<span style=\'text-align:center\'><p>This will <b>Delete</b> the Questionnaire' +
@@ -161,34 +178,77 @@ export class MainPageComponent implements OnInit {
     });
   }
   finishClicked() {
-    /*
-    const result = confirm('<span style=\'text-align:center\'><p>This will <b>Delete</b> the Questionnaire' +
-    '. <br><br> Do you wish to continue?</p></span>', 'Confirm changes');
+    let surveyModels: any[] = new Array();
+    let jsons: any[] = new Array();
+      // get api takes categoryId
+      this.categories.forEach(j => {
+        if(j.parentId > -1){
+          let q = this.jsonDatas.find(p => p.id === j.templateId);
+
+             if(q){
+              jsons.push(q);
+              this.makeQuesionNamesUnique(q);
+              let surveyModel = new Survey.Model(q);
+              surveyModel.data = JSON.parse(j.result);
+              surveyModels.push(surveyModel);
+            }
+         }
+      });
+
+    let list = '';
+    this.categories.forEach(element => {
+      if(element.parentId === -1){
+        const hasChildren = this.categories.find(p => p.parentId === element.id);
+        if(hasChildren){
+          list = list + '<b>' + element.text+ '</b>' + '<br>';
+          this.categories.forEach(child => {
+            if(child.parentId === element.id){
+              list = list + child.text + '<br>';
+            }
+          });
+        }
+      }
+    });
+    const result = confirm('<span style=\'text-align:center\'><p>The following forms will be exported as PDF and will be sent to support via Email.' +
+    '<br><br> Here is a summary of the completed forms:<br><br>' + list + 
+    '<br>Do you wish to continue?<p></span>', 'Confirm');
   result.then((dialogResult: boolean) => {
     if (dialogResult) {
+      this.saveQuiz();
+      var options = {
+        fontSize: 14,
+        margins: {
+          left: 10,
+          right: 10,
+          top: 18,
+          bot: 10
+        }
+      };
+      let json = {
+        "pages": []
+       };
+       for (let i = 0; i < jsons.length; i++) {
+         json.pages.push(jsons[i].pages[0]);
+       }
+
+      var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
+      let data = {};
+      for (let i = 0; i < surveyModels.length; i++) {
+        data = Object.assign(data, surveyModels[i].data);
+      }
+      surveyPDF.data = data;
+      surveyPDF.onRenderHeader.add(function (_, canvas) {
+        canvas.drawText({
+          text:
+            "",
+          fontSize: 10
+        });
+      });
+      surveyPDF.save();
     }
   });
-*/
-    this.saveQuiz();
-    var options = {
-      fontSize: 14,
-      margins: {
-        left: 10,
-        right: 10,
-        top: 18,
-        bot: 10
-      }
-    };
-    var surveyPDF = new SurveyPDF.SurveyPDF(this.jsonData, options);
-    surveyPDF.data = this.survey.surveyModel.data;
-    surveyPDF.onRenderHeader.add(function (_, canvas) {
-      canvas.drawText({
-        text:
-          "",
-        fontSize: 10
-      });
-    });
-    surveyPDF.save();
+
+
   }
   setParentSelection(selectedNode: any) {
     this.selectedRowKeys = [selectedNode.id];
@@ -196,7 +256,7 @@ export class MainPageComponent implements OnInit {
     this.childCategory = '';
     this.description = true;
     this.questionnaire = false;
-    this.title = selectedNode.text;
+    this.title = selectedNode.html;
     this.templateId = selectedNode.templateId;
   }
 }

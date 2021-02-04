@@ -170,35 +170,3 @@ export class SurveyComponent implements OnInit , AfterViewInit{
     this.surveyModel.prevPage();
   }  
 }
-
-
-
-/*
-  "categories": [
-    {
-      "id": 1,
-      "text": "Location",
-      "expanded": true,
-      "parentId": -1,
-      "items": [
-        {
-          "id": 1,
-          "text": "Milton",
-          "expanded": false,
-          "items": [],
-          "parentId": 1,
-          "quizId": 1
-        },
-        {
-          "id": 2,
-          "text": "Mark",
-          "expanded": false,
-          "items": [],
-          "parentId": 1,
-          "quizId": 1
-        }
-      ],
-      "quizId": 1
-    }
-  ],
-*/

@@ -120,6 +120,14 @@ updateResult(id, item): Observable<Employee> {
         catchError(this.handleError)
       )
   }
+  getCategoryItems(): Observable<any> {
+    return this.http
+      .get<any>(this.base_questionnaires)
+      .pipe(
+        retry(2),
+        catchError(this.handleError)
+      )
+  }
   getCategory(id): Observable<any> {
     return this.http
       .get<any>(this.base_categories + '/' + id)

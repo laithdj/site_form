@@ -146,7 +146,8 @@
       "id": 1,
       "text": "Location",
       "parentId": -1,
-      "templateId": 3
+      "templateId": 3,
+      "html": "<span style=\"text-align:center\"><p>The following forms will be exported as PDF and will be sent to support via Email.<br><br> Here is a summary of the completed forms:<br><br>"
     },
     {
       "id": 3,
@@ -172,7 +173,21 @@
       "text": "Aspley",
       "parentId": 1,
       "templateId": 3,
-      "result": "{\"question1\":\"Aspley\",\"question2\":\"John\",\"question3\":\"Blue\"}"
+      "result": "{\"question1\":\"Aspley\",\"question2\":\"Johnl\",\"question3\":\"Blue\"}"
+    },
+    {
+      "id": 7,
+      "text": "bbc",
+      "parentId": 3,
+      "templateId": 4,
+      "result": "{\"question1\":\"bbc\"}"
+    },
+    {
+      "id": 9,
+      "text": "wewewe",
+      "parentId": 3,
+      "templateId": 4,
+      "result": "{\"question1\":\"wewewe\",\"question3\":\"ewewewe\",\"question2\":\"3232323\"}"
     }
   ],
   "results": [
