@@ -1,6 +1,118 @@
 {
   "questionnaires": [
     {
+      "pages": [
+        {
+          "name": "page1",
+          "elements": [
+            {
+              "type": "radiogroup",
+              "name": "question8",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "image",
+              "name": "question12",
+              "imageLink": "https://surveyjs.io/Content/Images/examples/image-picker/lion.jpg"
+            },
+            {
+              "type": "imagepicker",
+              "name": "question11",
+              "choices": [
+                {
+                  "value": "lion",
+                  "imageLink": "https://surveyjs.io/Content/Images/examples/image-picker/lion.jpg"
+                },
+                {
+                  "value": "giraffe",
+                  "imageLink": "https://surveyjs.io/Content/Images/examples/image-picker/giraffe.jpg"
+                },
+                {
+                  "value": "panda",
+                  "imageLink": "https://surveyjs.io/Content/Images/examples/image-picker/panda.jpg"
+                },
+                {
+                  "value": "camel",
+                  "imageLink": "https://surveyjs.io/Content/Images/examples/image-picker/camel.jpg"
+                }
+              ]
+            },
+            {
+              "type": "boolean",
+              "name": "question10"
+            },
+            {
+              "type": "expression",
+              "name": "question9"
+            },
+            {
+              "type": "ranking",
+              "name": "question7",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "dropdown",
+              "name": "question6",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "checkbox",
+              "name": "question5",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "radiogroup",
+              "name": "question4",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "dropdown",
+              "name": "question3",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            },
+            {
+              "type": "comment",
+              "name": "question2"
+            },
+            {
+              "type": "checkbox",
+              "name": "question1",
+              "choices": [
+                "item1",
+                "item2",
+                "item3"
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 7
+    },
+    {
       "title": "Template",
       "description": "my first survey",
       "pages": [
@@ -147,7 +259,7 @@
       "text": "Location",
       "parentId": -1,
       "templateId": 3,
-      "html": "<span style=\"text-align:center\"><p>The following forms will be exported as PDF and will be sent to support via Email.<br><br> Here is a summary of the completed forms:<br><br>"
+      "html": "<p>This is a form builder for Select the 'Add Record button' to begin filling in the form  once finished and ready for forms to be exported and emailed,   click 'I am Finished' <br><br> A client is requested to complete a 'Form' set (e.g 'Site Setup'). There will be 1 x HMS-ClientPortal-Client created.       When they save a page the result is store in HMS-ClientPortal-Client_Result keyed to the client record (Client_ID) and the content definition (Content_ID)</p>"
     },
     {
       "id": 3,
@@ -177,17 +289,31 @@
     },
     {
       "id": 7,
-      "text": "bbc",
+      "text": "John",
       "parentId": 3,
       "templateId": 4,
-      "result": "{\"question1\":\"bbc\"}"
+      "result": "{\"question1\":\"John\",\"question3\":\"Milton\",\"question2\":\"dfsdf\",\"question4\":\"sfdsdf\",\"question5\":\"401401\"}"
+    },
+    {
+      "id": 8,
+      "text": "SouthBank",
+      "parentId": 1,
+      "templateId": 3,
+      "result": "{\"question1\":\"SouthBank\",\"question2\":\"Claire\",\"question3\":\"Red\"}"
     },
     {
       "id": 9,
-      "text": "wewewe",
+      "text": "BBC",
       "parentId": 3,
       "templateId": 4,
-      "result": "{\"question1\":\"wewewe\",\"question3\":\"ewewewe\",\"question2\":\"3232323\"}"
+      "result": "{\"question1\":\"BBC\",\"question3\":\"s\"}"
+    },
+    {
+      "id": 10,
+      "text": "Test",
+      "parentId": -1,
+      "templateId": 7,
+      "html": "<p>This is a form builder for Select the 'Add Record button' to begin filling in the form  once finished and ready for forms to be exported and emailed,   click 'I am Finished' <br><br> A client is requested to complete a 'Form' set (e.g 'Site Setup'). There will be 1 x HMS-ClientPortal-Client created.       When they save a page the result is store in HMS-ClientPortal-Client_Result keyed to the client record (Client_ID) and the content definition (Content_ID)</p>"
     }
   ],
   "results": [

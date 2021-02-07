@@ -57,8 +57,9 @@
             (addClicked)="addRecord()"
             (finishClicked)="finishClicked()"
             [deleteDisabled]="deleteDisabled"
-            [newRecord]="description"
-            [title]="title"></app-footer>
+            [newRecord]="showAddRecord"
+            [title]="title"
+            [selected]="selected"></app-footer>
         </div>
     </dxi-item>
 </dx-form>

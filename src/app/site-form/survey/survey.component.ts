@@ -101,6 +101,7 @@ export class SurveyComponent implements OnInit , AfterViewInit{
 
 
   loadQuestionnaire(json: any,showResult?:boolean,categoryId?:string) {
+
     const surveyModel = new Survey.Model(json);
     this.surveyModel = surveyModel;
     console.log(surveyModel.data);
@@ -120,7 +121,7 @@ export class SurveyComponent implements OnInit , AfterViewInit{
     }else{
       this.navigatePages = false;
     }
-    Survey.SurveyNG.render("surveyElement", { model: surveyModel });
+    Survey.SurveyNG.render("surveyElement", { model: surveyModel , css: myCss });
     this.loader = false;
   //loader false
   }

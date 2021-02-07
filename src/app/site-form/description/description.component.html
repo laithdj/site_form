@@ -1,12 +1,8 @@
 <div class="center" style="height:calc(100vh - 225px)" >
-    <div  *ngIf="title" style="margin-top:30%">
-        <p>This is a form builder for 
-            Select the "Add Record button" to begin filling in the form 
-            once finished and ready for forms to be exported and emailed, click "I am Finished"
-        </p>
-    </div>
+    <div  *ngIf="title" style="margin-top:10%">
+        <div [innerHTML]="title"></div>
+    </div>    
     <div  *ngIf="!title" style="margin-left:20%;margin-top:30%">
         <img src="../../../assets/ht_logo.png" />
     </div>
 </div>
-

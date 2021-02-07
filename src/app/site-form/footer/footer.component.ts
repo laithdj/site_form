@@ -14,6 +14,8 @@ export class FooterComponent implements OnInit {
   @Input() deleteDisabled: boolean;
   @Input() newRecord: boolean;
   @Input() title: boolean;
+  @Input() selected: boolean;
+
 
 
 

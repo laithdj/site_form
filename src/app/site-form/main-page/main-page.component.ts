@@ -4,6 +4,7 @@ import { SurveyComponent } from '../survey/survey.component';
 import * as SurveyPDF from "survey-pdf";
 import { confirm } from 'devextreme/ui/dialog';
 import * as Survey from "survey-angular";
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 export class Category {
@@ -13,7 +14,7 @@ export class Category {
   parentId: number;
   result: any;
   children?: number;
-  html?:string;
+  html?: string;
 }
 export class Result {
   templateId: number;
@@ -41,11 +42,13 @@ export class MainPageComponent implements OnInit {
   jsonData: string;
   selectedRowKeys: number[];
   expandedRowKeys: number[] = new Array();
-  title: string;
+  title: any;
   deleteDisabled = false;
   uniqJsonCount = 0;
   jsonDatas: any[] = new Array();
-  constructor(private service: HttpDataService) { }
+  showAddRecord = true;
+  selected: boolean;
+  constructor(private service: HttpDataService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -65,18 +68,17 @@ export class MainPageComponent implements OnInit {
     });
   }
   selectItem(e) {
-    
-    console.log(e);
     this.selectedNode = e.data;
     this.itemType = '';
-
+    this.selected = true;
     if (e.data) {
       if (e.data.parentId === -1) {
         this.expandedRowKeys = [e.key];
         this.parentCategory = e.data.text;
-        this.title = e.data.html;
+        this.title = e.data.html ? this.sanitizer.bypassSecurityTrustHtml(e.data.html) : null;
         this.childCategory = '';
         this.description = true;
+        this.showAddRecord = true;
         this.questionnaire = false;
         this.templateId = e.data.templateId;
       } else if (e.data.parentId > -1) {
@@ -84,13 +86,14 @@ export class MainPageComponent implements OnInit {
         this.childCategory = e.data.text;
         this.questionnaire = true;
         this.description = false;
+        this.showAddRecord = false;
         this.templateId = e.data.templateId;
         this.selectedNodeId = e.data.id;
         this.survey.selectResult(this.templateId, e.data.id);
         this.getQuestionnairJson(this.templateId);
       }
     }
-    
+
   }
   getQuestionnairJson(e): any {
     this.service.getCategoryItem(e).subscribe((response) => {
@@ -134,6 +137,8 @@ export class MainPageComponent implements OnInit {
   addRecord() {
     this.questionnaire = true;
     this.description = false;
+    this.showAddRecord = false;
+
     this.survey.selectQuestionnaire(this.templateId);
     this.deleteDisabled = true;
 
@@ -152,12 +157,12 @@ export class MainPageComponent implements OnInit {
       });
     }
   }
- makeQuesionNamesUnique(json) {
-  for (let i = 0; i < json.pages[0].elements.length; i++) {
-    json.pages[0].elements[i].name += "_uniqJsonCount" + this.uniqJsonCount; 
+  makeQuesionNamesUnique(json) {
+    for (let i = 0; i < json.pages[0].elements.length; i++) {
+      json.pages[0].elements[i].name += "_uniqJsonCount" + this.uniqJsonCount;
+    }
+    this.uniqJsonCount++;
   }
-  this.uniqJsonCount++;
-}
   deleteQuiz() {
 
     const result = confirm('<span style=\'text-align:center\'><p>This will <b>Delete</b> the Questionnaire' +
@@ -180,29 +185,29 @@ export class MainPageComponent implements OnInit {
   finishClicked() {
     let surveyModels: any[] = new Array();
     let jsons: any[] = new Array();
-      // get api takes categoryId
-      this.categories.forEach(j => {
-        if(j.parentId > -1){
-          let q = this.jsonDatas.find(p => p.id === j.templateId);
+    // get api takes categoryId
+    this.categories.forEach(j => {
+      if (j.parentId > -1) {
+        let q = this.jsonDatas.find(p => p.id === j.templateId);
 
-             if(q){
-              jsons.push(q);
-              this.makeQuesionNamesUnique(q);
-              let surveyModel = new Survey.Model(q);
-              surveyModel.data = JSON.parse(j.result);
-              surveyModels.push(surveyModel);
-            }
-         }
-      });
+        if (q) {
+          jsons.push(q);
+          this.makeQuesionNamesUnique(q);
+          let surveyModel = new Survey.Model(q);
+          surveyModel.data = JSON.parse(j.result);
+          surveyModels.push(surveyModel);
+        }
+      }
+    });
 
     let list = '';
     this.categories.forEach(element => {
-      if(element.parentId === -1){
+      if (element.parentId === -1) {
         const hasChildren = this.categories.find(p => p.parentId === element.id);
-        if(hasChildren){
-          list = list + '<b>' + element.text+ '</b>' + '<br>';
+        if (hasChildren) {
+          list = list + '<b>' + element.text + '</b>' + '<br>';
           this.categories.forEach(child => {
-            if(child.parentId === element.id){
+            if (child.parentId === element.id) {
               list = list + child.text + '<br>';
             }
           });
@@ -210,53 +215,52 @@ export class MainPageComponent implements OnInit {
       }
     });
     const result = confirm('<span style=\'text-align:center\'><p>The following forms will be exported as PDF and will be sent to support via Email.' +
-    '<br><br> Here is a summary of the completed forms:<br><br>' + list + 
-    '<br>Do you wish to continue?<p></span>', 'Confirm');
-  result.then((dialogResult: boolean) => {
-    if (dialogResult) {
-      this.saveQuiz();
-      var options = {
-        fontSize: 14,
-        margins: {
-          left: 10,
-          right: 10,
-          top: 18,
-          bot: 10
+      '<br><br> Here is a summary of the completed forms:<br><br>' + list +
+      '<br>Do you wish to continue?<p></span>', 'Confirm');
+    result.then((dialogResult: boolean) => {
+      if (dialogResult) {
+        this.saveQuiz();
+        var options = {
+          fontSize: 14,
+          margins: {
+            left: 10,
+            right: 10,
+            top: 18,
+            bot: 10
+          }
+        };
+        let json = {
+          "pages": []
+        };
+        for (let i = 0; i < jsons.length; i++) {
+          json.pages.push(jsons[i].pages[0]);
         }
-      };
-      let json = {
-        "pages": []
-       };
-       for (let i = 0; i < jsons.length; i++) {
-         json.pages.push(jsons[i].pages[0]);
-       }
 
-      var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
-      let data = {};
-      for (let i = 0; i < surveyModels.length; i++) {
-        data = Object.assign(data, surveyModels[i].data);
-      }
-      surveyPDF.data = data;
-      surveyPDF.onRenderHeader.add(function (_, canvas) {
-        canvas.drawText({
-          text:
-            "",
-          fontSize: 10
+        var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
+        let data = {};
+        for (let i = 0; i < surveyModels.length; i++) {
+          data = Object.assign(data, surveyModels[i].data);
+        }
+        surveyPDF.data = data;
+        surveyPDF.onRenderHeader.add(function (_, canvas) {
+          canvas.drawText({
+            text:
+              "",
+            fontSize: 10
+          });
         });
-      });
-      surveyPDF.save();
-    }
-  });
-
-
+        surveyPDF.save();
+      }
+    });
   }
   setParentSelection(selectedNode: any) {
     this.selectedRowKeys = [selectedNode.id];
     this.parentCategory = selectedNode.text;
     this.childCategory = '';
     this.description = true;
+    this.showAddRecord = true;
     this.questionnaire = false;
-    this.title = selectedNode.html;
+    this.title = selectedNode.html ? this.sanitizer.bypassSecurityTrustHtml(selectedNode.html) : null;
     this.templateId = selectedNode.templateId;
   }
 }

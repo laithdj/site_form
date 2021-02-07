@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { CommonModule } from '@angular/common';
 import { DxTextBoxModule, DxFormModule, DxCheckBoxModule, DxButtonModule, DxDataGridModule, DxRadioGroupModule,
-  DxSelectBoxModule, DxPopupModule, DxDateBoxModule, DxTreeListModule, DxTreeViewModule, DxLoadIndicatorModule } from 'devextreme-angular';
+  DxSelectBoxModule, DxPopupModule, DxDateBoxModule, DxTreeListModule, DxTreeViewModule, DxLoadIndicatorModule, DxHtmlEditorModule } from 'devextreme-angular';
 import dxLoadIndicator from 'devextreme/ui/load_indicator';
 
 
@@ -24,8 +24,8 @@ import dxLoadIndicator from 'devextreme/ui/load_indicator';
     DxDataGridModule,
     DxDateBoxModule,
     DxTreeViewModule,
-    DxLoadIndicatorModule
-    
+    DxLoadIndicatorModule,
+    DxHtmlEditorModule
   ],
   exports: [
     CommonModule,
@@ -43,7 +43,8 @@ import dxLoadIndicator from 'devextreme/ui/load_indicator';
     DxSelectBoxModule,
     DxTreeViewModule,
     DxDateBoxModule,
-    DxLoadIndicatorModule
+    DxLoadIndicatorModule,
+    DxHtmlEditorModule
   ],
 })
 export class SharedModule { 

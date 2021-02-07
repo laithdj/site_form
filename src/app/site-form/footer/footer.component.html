@@ -3,7 +3,7 @@
         <dx-button text="Delete" [width]="120" (onClick)="onDeleteClicked()" [type]="'danger'" [visible]="!newRecord"
         [disabled]="deleteDisabled">
         </dx-button>
-        <dx-button text="Add Record" [width]="120" (onClick)="onAddClicked()" [type]="'default'" [visible]="newRecord && title"
+        <dx-button text="Add Record" [width]="120" (onClick)="onAddClicked()" [type]="'default'" [visible]="newRecord && selected"
         >
         </dx-button>
     </div>
